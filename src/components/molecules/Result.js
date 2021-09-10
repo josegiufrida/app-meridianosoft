@@ -13,10 +13,12 @@ const Result = ({data, title, subTitle, search, filter, ocurrence}) => {
 
     const navigation = useNavigation();
 
+    const initial_data = data;
+
     return (
         <TouchableOpacity 
             style={styles.container}
-            onPress={() => navigation.navigate('Client', {data, title, subTitle})}
+            onPress={() => navigation.navigate({ name: 'Client', params: data})}
         >
             <View style={{flex: 1, flexDirection: 'column'}}>
 

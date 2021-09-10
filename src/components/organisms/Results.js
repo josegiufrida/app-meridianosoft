@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, FlatList, StyleSheet, Text, ActivityIndicator, Alert } from 'react-native';
 import colors from '../../theme/colors';
 import ErrorMsg from '../molecules/ErrorMsg';
+import API from '../../utils/api';
 
 import Result from '../molecules/Result';
 
@@ -44,14 +45,12 @@ const Results = ({search, filter}) => {
     const queryApi = async (new_query) => {
         try {
 
-            var api_url = 'https://meridianosoft.com.ar/api/v1.0/clients?'; // ###################################
-
             var parms = new URLSearchParams({
                 search: search,
                 filter: filter?.id,
             });
 
-            var query_url = ( new_query ? api_url + parms : pagination.next_page_url );
+            var query_url = ( new_query ? API.CLIENTS + '?' + parms : pagination.next_page_url );
 
 
             const response = await fetch(query_url, {
@@ -107,7 +106,7 @@ const Results = ({search, filter}) => {
 
             console.error(`API Error: ${error.message}`);           // #######################  Muesto error al usuario ?? codigo o algo ???
             setError(true);
-            //setErrorMessage(error.description);   ########
+            //setErrorMessage(error.message);   ########
             return;
 
         }

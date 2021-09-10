@@ -3,7 +3,7 @@ import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 import SvgIcons from '../../assets/svg/SvgIcons';
 
 
-const ErrorMsg = ({message}) => {
+const ErrorMsg = ({message, error_code}) => {
 
 	const messageText = message || 'Ha ocurrido un error';
 
