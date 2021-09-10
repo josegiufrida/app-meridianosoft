@@ -3,7 +3,7 @@ import { StyleSheet, ScrollView, Text, View, TextInput } from 'react-native';
 import colors from '../../theme/colors';
 
 
-const SearchInput = () => {
+const SearchInput = ({setSearch}) => {
 
     const [text, onChangeText] = React.useState('');
 
@@ -18,6 +18,8 @@ const SearchInput = () => {
                 maxLength={100}
                 selectionColor={colors.primary}
                 placeholderTextColor={colors.textSecondary}
+                returnKeyType={'search'}
+                onSubmitEditing={() => setSearch(text)}
             />
         </View>
     );

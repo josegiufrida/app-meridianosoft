@@ -13,6 +13,8 @@ const colors = {
     arrowCircle: '#F2F2F2',
     arrow: '#77838F',
 
+    detailIcon: '#77838F',
+
     blue: '#195EC8',
     green: '#38C1A3',
     orange: '#FE9518',

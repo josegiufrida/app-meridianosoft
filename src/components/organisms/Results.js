@@ -1,179 +1,201 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, FlatList, StyleSheet, Text, ActivityIndicator, Alert } from 'react-native';
 import colors from '../../theme/colors';
+import ErrorMsg from '../molecules/ErrorMsg';
 
 import Result from '../molecules/Result';
 
 
-const DATA = [
-    {
-      id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-      title: 'First Item',
-      subTitle: 'First Sub',
-    },
-    {
-      id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-      title: 'Second Item',
-      subTitle: 'Second Sub',
-    },
-    {
-      id: '58694a0f-3da1-471f-bd96-145571e29d72',
-      title: 'Third Item',
-      subTitle: 'Third Sub',
-    },
-    {
-        id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28baq',
-        title: 'First Item',
-        subTitle: 'First Sub',
-      },
-      {
-        id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63w',
-        title: 'Second Item',
-        subTitle: 'Second Sub',
-      },
-      {
-        id: '58694a0f-3da1-471f-bd96-145571e29d7e',
-        title: 'Third Item',
-        subTitle: 'Third Sub',
-      },
-      {
-        id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28bea',
-        title: 'First Item',
-        subTitle: 'First Sub',
-      },
-      {
-        id: '3ac68afc-c605-48d3-a4f8-fbd9d1aa97f63',
-        title: 'Second Item',
-        subTitle: 'Second Sub',
-      },
-      {
-        id: '58694a0f-3da1-471f-bd96-1455w71e29d72',
-        title: 'Third Item',
-        subTitle: 'Third Sub',
-      },
-      {
-        id: 'bd7acbea-c1b1-46c2-aed5-3adw53abb28ba',
-        title: 'First Item',
-        subTitle: 'First Sub',
-      },
-      {
-        id: '3ac68afc-c605-48d3-a4f8-fbd9e1aa97f63',
-        title: 'Second Item',
-        subTitle: 'Second Sub',
-      },
-      {
-        id: '58694a0f-3da1-471f-bd9d6-145571e29d72',
-        title: 'Third Item',
-        subTitle: 'Third Sub',
-      },
-      {
-        id: 'bd7acbea-c1b1-46c2-aedq5-3ad53abb28ba',
-        title: 'First Item',
-        subTitle: 'First Sub',
-      },
-      {
-        id: '3ac68afc-c605-48d3-a4df8-fbd91aa97f63',
-        title: 'Second Item',
-        subTitle: 'Second Sub',
-      },
-      {
-        id: '58694a0f-3da1-471f-bcd96-145571e29d72',
-        title: 'Third Item',
-        subTitle: 'Third Sub',
-      },
-      {
-        id: 'bd7acbea-c1b1-46c2-aedv5-3ad53abb28ba',
-        title: 'First Item',
-        subTitle: 'First Sub',
-      },
-      {
-        id: '3ac68afc-c605-48d3-a4ef8-fbd91aa97f63',
-        title: 'Second Item',
-        subTitle: 'Second Sub',
-      },
-      {
-        id: '58694a0f-3da1-471f-btd96-145571e29d72',
-        title: 'Third Item',
-        subTitle: 'Third Sub',
-      },
-      {
-        id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb2b8ba',
-        title: 'First Item',
-        subTitle: 'First Sub',
-      },
-      {
-        id: '3ac68afc-c605-48d3-a4f8-fbd91yaa97f63',
-        title: 'Second Item',
-        subTitle: 'Second Sub',
-      },
-      {
-        id: '58694a0f-3da1-471f-bd96-145571ne29d72',
-        title: 'Third Item',
-        subTitle: 'Third Sub',
-      },
-      {
-        id: 'bd7acbyea-c1b1-46c2-aed5-3ad53abb28ba',
-        title: 'First Item',
-        subTitle: 'First Sub',
-      },
-      {
-        id: '3tac68afc-c605-48d3-a4f8-fbd91aa97f63',
-        title: 'Second Item',
-        subTitle: 'Second Sub',
-      },
-      {
-        id: '58694ay0f-3da1-471f-bd96-145571e29d72',
-        title: 'Thirdasdddddddddddddddddddddddd Item',
-        subTitle: 'Third Sub',
-      },    
-];
 
 
+const Results = ({search, filter}) => {
+
+    const [isLoading, setLoading] = useState(true);
+
+    const [data, setData] = useState([]);
+
+    const [pagination, setPagination] = useState(null);
+
+    const [isLastPage, setIsLastPage] = useState(false);
+
+    const [loadingMore, setloadingMore] = useState(false);
+
+    const [error, setError] = useState(false);
+
+    const [errorMessage, setErrorMessage] = useState(null);
+
+    
+    
+    useEffect(() => {
+        refreshQuery();
+        queryApi(true);
+    }, [search, filter]);
 
 
-const Results = () => {
+    const refreshQuery = () => {
+        setLoading(true);
+        setloadingMore(false);
+        setIsLastPage(false);
+        setError(false);
+        setErrorMessage(null);
+    };
 
-    const [loading, setLoading] = useState(false);
 
-    const getApi = async () => {
+    const queryApi = async (new_query) => {
         try {
 
-            const response = await fetch('https://612ec987d11e5c00175586dd.mockapi.io/api/v1/clients', {
+            var api_url = 'https://meridianosoft.com.ar/api/v1.0/clients?'; // ###################################
+
+            var parms = new URLSearchParams({
+                search: search,
+                filter: filter?.id,
+            });
+
+            var query_url = ( new_query ? api_url + parms : pagination.next_page_url );
+
+
+            const response = await fetch(query_url, {
                 method: 'GET',
                 headers: {
                     'Accept': 'application/json',
-                    'Authorization': 'TOKEN',       // ############
-                }
+                    'Authorization': 'Bearer 4|X8HLVJj6vo7V9a1hDPGNIU10c4R0BDhC8f0txz3D',           // ################################3
+                },
             });
 
-            Alert.alert(JSON.stringify(response));
+
+            var json = await response.json();
+            
+
+            // Query error
+            if(!response.ok){
+                throw Error(json);
+            }
+
+
+            setData( new_query ? json.data : [...data, ...json.data] );
+
+            setLoading(false);
+
+            setloadingMore(false);
+
+            setPagination({
+                'current_page': json.current_page,
+                'last_page': json.last_page,
+                'next_page_url': json.next_page_url
+            });
+
+            if(json.current_page === json.last_page){
+                setIsLastPage(true);
+            }
 
         } catch (error) {
-            console.error(error);
+
+            // On Server Error
+            if(error.message){
+                if(error.message === 'unauthenticated'){
+                    // Lost token, need re-login
+                }
+
+                if(error.message === 'unauthorized'){
+                    // Not authorized to query this resource
+                }
+
+                if(error.message === 'query error'){
+                    // Bad query input
+                }
+            }
+
+            console.error(`API Error: ${error.message}`);           // #######################  Muesto error al usuario ?? codigo o algo ???
+            setError(true);
+            //setErrorMessage(error.description);   ########
+            return;
+
         }
     };
 
-    const renderItem = ({ item }) => (
-        <Result title={item.title} subTitle={item.subTitle} />
-    );
+
+    const endReached = () => {
+        if(!isLastPage){
+            setloadingMore(true);
+            queryApi(false);
+        }
+    };
     
-    return (
-        <FlatList
-            data={DATA}
-            renderItem={renderItem}
-            keyExtractor={item => item.id}
-            onEndReached={() => getApi()}
-            ListFooterComponent={
-                <ActivityIndicator animating={loading} size='large' color={colors.primary} />
+
+    const footerComponent = () => (
+        <>
+            { !isLastPage &&
+                <ActivityIndicator animating={loadingMore} size='large' color={colors.primary} />
+            }
+        </>
+    );
+
+
+    const emptyList = () => (
+        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+            <Text style={styles.emptyListText}>Sin resultados</Text>
+        </View>
+    );
+
+
+
+
+    const renderItem = ({ item }) => (
+        <Result
+            data={item}
+            title={item.razon_social}
+            subTitle={`Cod. ${item.id_cliente}`}
+
+            search={search}
+            filter={filter}
+            ocurrence={
+                filter ? item[filter.id] : null
             }
         />
     );
+    
+
+
+    return (
+        <View style={{flex: 1, justifyContent: 'center'}}>
+
+            { error ? 
+            
+                <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+                    <ErrorMsg message={errorMessage}/>
+                </View>
+
+                :
+
+                isLoading ? 
+
+                    <ActivityIndicator size='large' color={colors.primary} /> 
+                    
+                    :
+                    
+                    <FlatList
+                        data={data}
+                        renderItem={renderItem}
+                        keyExtractor={item => item.id_cliente}
+                        contentContainerStyle={{ flexGrow: 1 }}
+                        onEndReached={() => endReached()}
+                        ListFooterComponent={footerComponent}
+                        ListEmptyComponent={emptyList}
+                    />
+
+            }
+
+        </View>
+    );
+   
 
 };
 
 
 const styles = StyleSheet.create({
-    
+    emptyListText:{
+        fontSize: 16
+    }
 });
 
 export default Results;
