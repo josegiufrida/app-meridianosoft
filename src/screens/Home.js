@@ -1,13 +1,17 @@
-import * as React from 'react';
+import React, { useContext } from 'react';
 import { StyleSheet, View, Text, Button } from 'react-native';
+import { AuthContext } from '../utils/AuthContext';
 
 import Menu from '../components/organisms/Menu';
 
 function HomeScreen({ navigation }) {
+
+    const { auth } = useContext(AuthContext);
+
     return (
         <View style={styles.container}>
 
-            <Text style={styles.title}>Gafe</Text>
+            <Text style={styles.title}>{auth.company_name}</Text>
             <Text style={styles.subtitle}>Actualizado hace 34 minutos</Text>
 
             <Menu />

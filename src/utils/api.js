@@ -1,10 +1,16 @@
 
 
-const BASE = 'https://meridianosoft.com.ar/api/v1.0/';
+const BASE = 'https://meridianosoft.com.ar/api/';
+
+const VERSION = 'v1.0/';
+
 
 const API = { 
-	BASE: BASE,
-	CLIENTS: BASE + 'clients'
+	CLIENTS: BASE + VERSION + 'clients',
+	LOGIN: BASE + 'login',
+	FILTERS: {
+		CLIENTS: BASE + VERSION + 'filters/clients',
+	}
 }; 
 
 

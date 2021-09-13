@@ -1,24 +1,23 @@
-import Navigator from './src/navigation/Navigator';
+/*import Navigator from './src/navigation/Navigator';
 
-export default Navigator;
+export default Navigator;*/
 
 
 
-/*
+
 import * as React from 'react';
-import { StyleSheet, View, Text, Button } from 'react-native';
-
 import Navigator from './src/navigation/Navigator';
+import { AuthProvider } from './src/utils/AuthContext';
+
 
 
 const App = () => {
     return (
-        <View>
+        <AuthProvider>
             <Navigator />
-        </View>
+        </AuthProvider>
     );
 }
 
 
 export default App;
-*/

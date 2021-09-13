@@ -1,9 +1,11 @@
+import axios from 'axios';
 import React, { useState, useEffect }  from 'react';
 import { StyleSheet, ScrollView, Text, View, Alert } from 'react-native';
 
 import SearchInput from '../components/atoms/SearchInput';
 import SearchFilter from '../components/molecules/SearchFilter';
 import Results from '../components/organisms/Results';
+import API from '../utils/api';
 
 
 
@@ -21,25 +23,20 @@ const Search = ({table}) => {
         getFilters();
     }, []);
 
-
     const getFilters = async () => {
         try {
 
-            var api_url = 'https://meridianosoft.com.ar/api/v1.0/filters/clients';
+            const response = await axios.get(API.FILTERS.CLIENTS);
 
-            const response = await fetch(api_url, {
-                method: 'GET',
-                headers: {
-                    'Accept': 'application/json',
-                    'Authorization': '4|X8HLVJj6vo7V9a1hDPGNIU10c4R0BDhC8f0txz3D',       // ##################
-                }
-            });
+            const filtros = await response.data;
 
-            var json = await response.json();
+            // Default filter
+            setSelectedFilter(filtros.find( filtro => filtro.default ));
 
-            setFilters(json);
+            setFilters(filtros);
 
         } catch (error) {
+            console.log(error);
             setError(true);
         }
     };

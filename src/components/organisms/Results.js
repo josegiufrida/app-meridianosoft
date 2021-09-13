@@ -3,6 +3,7 @@ import { View, FlatList, StyleSheet, Text, ActivityIndicator, Alert } from 'reac
 import colors from '../../theme/colors';
 import ErrorMsg from '../molecules/ErrorMsg';
 import API from '../../utils/api';
+import axios from 'axios';
 
 import Result from '../molecules/Result';
 
@@ -45,31 +46,15 @@ const Results = ({search, filter}) => {
     const queryApi = async (new_query) => {
         try {
 
-            var parms = new URLSearchParams({
-                search: search,
-                filter: filter?.id,
+            const response = await axios.get(API.CLIENTS, {
+                params: {
+                    search: search || '',
+                    filter: filter?.id || '',
+                }
             });
 
-            var query_url = ( new_query ? API.CLIENTS + '?' + parms : pagination.next_page_url );
-
-
-            const response = await fetch(query_url, {
-                method: 'GET',
-                headers: {
-                    'Accept': 'application/json',
-                    'Authorization': 'Bearer 4|X8HLVJj6vo7V9a1hDPGNIU10c4R0BDhC8f0txz3D',           // ################################3
-                },
-            });
-
-
-            var json = await response.json();
+            var json = await response.data;
             
-
-            // Query error
-            if(!response.ok){
-                throw Error(json);
-            }
-
 
             setData( new_query ? json.data : [...data, ...json.data] );
 
@@ -90,24 +75,31 @@ const Results = ({search, filter}) => {
         } catch (error) {
 
             // On Server Error
-            if(error.message){
-                if(error.message === 'unauthenticated'){
+            if(error.response){
+
+                // O tambien por codigo 400, 404 etc                    #####################
+
+                if(error.response.data?.error === 'unauthenticated'){
                     // Lost token, need re-login
                 }
 
-                if(error.message === 'unauthorized'){
+                if(error.response.data?.error === 'unauthorized'){
                     // Not authorized to query this resource
                 }
 
-                if(error.message === 'query error'){
+                if(error.response.data?.error === 'query error'){
                     // Bad query input
                 }
+
+                setErrorMessage(error.response.data?.message);
+                // SET ERROR HTTP CODE OR ERROR NAME
+
+            } else {
+                setErrorMessage('Ha ocurrido un error');
             }
 
-            console.error(`API Error: ${error.message}`);           // #######################  Muesto error al usuario ?? codigo o algo ???
+            console.error(error);
             setError(true);
-            //setErrorMessage(error.message);   ########
-            return;
 
         }
     };

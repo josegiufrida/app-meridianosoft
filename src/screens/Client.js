@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, ScrollView, Text, View, ActivityIndicator, Alert } from 'react-native';
+import axios from 'axios';
 
 import DetailItem from '../components/molecules/DetailItem';
 import SvgIcons from '../assets/svg/SvgIcons';
@@ -29,28 +30,41 @@ const Client = ({ route, navigation }) => {
     const queryApi = async () => {
         try {
 
-            var query_url = API.CLIENTS + '/' + id_cliente;
+            const response = await axios.get(API.CLIENTS + '/' + id_cliente);
 
-            const response = await fetch(query_url, {
-                method: 'GET',
-                headers: {
-                    'Accept': 'application/json',
-                    'Authorization': 'Bearer 4|X8HLVJj6vo7V9a1hDPGNIU10c4R0BDhC8f0txz3D',           // ################################3
-                },
-            });
-
-            var json = await response.json();
-
-            // Query error
-            if(!response.ok){
-                throw Error(json);
-            }
+            var json = await response.data;
 
             setData(json);
 
         } catch (error) {
-            console.log(error);
+
+            // On Server Error
+            if(error.response){
+
+                // O tambien por codigo 400, 404 etc                    #####################
+
+                if(error.response.data?.error === 'unauthenticated'){
+                    // Lost token, need re-login
+                }
+
+                if(error.response.data?.error === 'unauthorized'){
+                    // Not authorized to query this resource
+                }
+
+                if(error.response.data?.error === 'query error'){
+                    // Bad query input
+                }
+
+                setErrorMessage(error.response.data?.message);
+                // SET ERROR HTTP CODE OR ERROR NAME
+
+            } else {
+                setErrorMessage('Ha ocurrido un error');
+            }
+
+            console.error(error);
             setError(true);
+
         }
     };
 
