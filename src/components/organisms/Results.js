@@ -26,11 +26,20 @@ const Results = ({search, filter}) => {
 
     const [errorMessage, setErrorMessage] = useState(null);
 
+    const [lastFilter, setLastFilter] = useState(null);
+
     
     
+
     useEffect(() => {
+
+        if(filter !== lastFilter && !search){
+            return;
+        }
+
         refreshQuery();
         queryApi(true);
+
     }, [search, filter]);
 
 
@@ -40,18 +49,21 @@ const Results = ({search, filter}) => {
         setIsLastPage(false);
         setError(false);
         setErrorMessage(null);
+        setLastFilter(filter);
     };
 
 
     const queryApi = async (new_query) => {
         try {
 
-            const response = await axios.get(API.CLIENTS, {
-                params: {
-                    search: search || '',
-                    filter: filter?.id || '',
-                }
+            var parms = new URLSearchParams({
+                search: search,
+                filter: filter?.id,
             });
+
+            var query_url = ( new_query ? API.CLIENTS + '?' + parms : pagination.next_page_url );
+
+            const response = await axios.get(query_url);
 
             var json = await response.data;
             
@@ -131,19 +143,27 @@ const Results = ({search, filter}) => {
 
 
 
-    const renderItem = ({ item }) => (
-        <Result
-            data={item}
-            title={item.razon_social}
-            subTitle={`Cod. ${item.id_cliente}`}
+    const renderItem = ({ item }) => {
+        // Sin la condicion, el componente se re-renderiza por milisegundos al cambiar el filtro, antes de que
+        // Aparezca ActivityIndicator (workaround)
+        return (
+            <>
+            { !isLoading &&
+                <Result
+                    data={item}
+                    title={item.razon_social}
+                    subTitle={`Cod. ${item.id_cliente}`}
 
-            search={search}
-            filter={filter}
-            ocurrence={
-                filter ? item[filter.id] : null
+                    search={search}
+                    filter={filter}
+                    ocurrence={
+                        filter && filter.id != 'id_cliente' && search ? item[filter.id] : null
+                    }
+                />
             }
-        />
-    );
+            </>
+        );
+    };
     
 
 
@@ -166,6 +186,7 @@ const Results = ({search, filter}) => {
                     
                     <FlatList
                         data={data}
+                        extraData={data}
                         renderItem={renderItem}
                         keyExtractor={item => item.id_cliente}
                         contentContainerStyle={{ flexGrow: 1 }}

@@ -16,12 +16,13 @@ const configureAxiosHeaders = (token) => {
 
 const AuthProvider = ({ children }) => {
 
+  	const [isLoading, setIsLoading] = useState(true);
   	const [auth, setAuthState] = useState({});
 
   	// Get current auth state from AsyncStorage
   	const getAuthState = async () => {
     	try {
-
+			
      		const token = await EncryptedStorage.getItem('@token');
 
 			const user = JSON.parse( await AsyncStorage.getItem('@user') || {});
@@ -34,8 +35,11 @@ const AuthProvider = ({ children }) => {
 				...user
 			});
 
+			setIsLoading(false);
+
     	} catch (error) {
       		setAuthState({});
+			setIsLoading(false);
     	}
   	};
 
@@ -60,13 +64,30 @@ const AuthProvider = ({ children }) => {
   	};
 
 
+	const logOut = async () => {
+		try {
+
+			await EncryptedStorage.removeItem('@token');
+
+			await AsyncStorage.removeItem('@user');
+
+			configureAxiosHeaders('');
+
+			setAuthState({});
+			
+		} catch (error){
+			Promise.reject(error);
+		}
+	}
+
+
   	useEffect(() => {
 		getAuthState();
   	}, []);
 
 
   	return (
-    	<AuthContext.Provider value={{ auth, setAuth }}>
+    	<AuthContext.Provider value={{ auth, setAuth, isLoading, logOut }}>
       		{children}
     	</AuthContext.Provider>
   	);

@@ -1,5 +1,5 @@
 
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useRef } from 'react';
 import { StyleSheet, View, Text, Button, TextInput, Platform } from 'react-native';
 import colors from '../theme/colors';
 import axios from 'axios';
@@ -16,6 +16,8 @@ function Login({ navigation }) {
 
     const [error, setError] = useState(false);
     const [errorMessage, setErrorMessage] = useState(null);
+
+    const refPassword = useRef();
 
     
 	const loginApi = async () => {
@@ -85,11 +87,13 @@ function Login({ navigation }) {
                 selectionColor={colors.primary}
                 placeholderTextColor={colors.textSecondary}
                 returnKeyType={'next'}
-                //onSubmitEditing={() => setSearch(text)}
+                onSubmitEditing={() => refPassword.current.focus()}
+                blurOnSubmit={false}
             />
 
 			<TextInput
                 onChangeText={setPassword}
+                ref={refPassword}
                 value={password}
                 placeholder='Contraseña'
                 autoCompleteType='off'
@@ -97,7 +101,7 @@ function Login({ navigation }) {
                 selectionColor={colors.primary}
                 placeholderTextColor={colors.textSecondary}
                 returnKeyType={'done'}
-                //onSubmitEditing={() => setSearch(text)}
+                onSubmitEditing={loginApi}
             />
 
             <Button
