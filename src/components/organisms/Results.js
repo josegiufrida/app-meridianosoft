@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { View, FlatList, StyleSheet, Text, ActivityIndicator, Alert } from 'react-native';
 import colors from '../../theme/colors';
 import ErrorMsg from '../molecules/ErrorMsg';
@@ -6,11 +6,13 @@ import API from '../../utils/api';
 import axios from 'axios';
 
 import Result from '../molecules/Result';
+import { AuthContext } from '../../utils/AuthContext';
 
 
 
 
 const Results = ({search, filter}) => {
+
 
     const [isLoading, setLoading] = useState(true);
 
@@ -28,9 +30,9 @@ const Results = ({search, filter}) => {
 
     const [lastFilter, setLastFilter] = useState(null);
 
-    
-    
+    const { clearUserData } = useContext(AuthContext);
 
+    
     useEffect(() => {
 
         if(filter !== lastFilter && !search){
@@ -86,32 +88,40 @@ const Results = ({search, filter}) => {
 
         } catch (error) {
 
-            // On Server Error
             if(error.response){
 
-                // O tambien por codigo 400, 404 etc                    #####################
+                var error_message = error.response.data?.message || 'Ha ocurrido un error';
 
-                if(error.response.data?.error === 'unauthenticated'){
-                    // Lost token, need re-login
-                }
+				switch (error.response.status){
 
-                if(error.response.data?.error === 'unauthorized'){
-                    // Not authorized to query this resource
-                }
+                    case 400:
+                        // Invalid query
+                        setErrorMessage(error_message);
+                        break;
 
-                if(error.response.data?.error === 'query error'){
-                    // Bad query input
-                }
+					case 401:
+						// Unauthenticated
+                        // Back to login
+                        clearUserData();
+						break;
 
-                setErrorMessage(error.response.data?.message);
-                // SET ERROR HTTP CODE OR ERROR NAME
+                    case 403:
+                        // Not authorized to this resource
+                        setErrorMessage(error_message);
+                        break;
+                
+					default:
+                        setErrorMessage(error_message);
+					
+				}
 
             } else {
                 setErrorMessage('Ha ocurrido un error');
             }
+            
+            setError(true);
 
             console.error(error);
-            setError(true);
 
         }
     };

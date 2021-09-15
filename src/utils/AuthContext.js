@@ -2,6 +2,8 @@ import React, { useState, useEffect, createContext } from 'react';
 import axios from 'axios';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import API from './api';
+import { Alert } from 'react-native';
 
 
 const AuthContext = createContext({});
@@ -16,10 +18,12 @@ const configureAxiosHeaders = (token) => {
 
 const AuthProvider = ({ children }) => {
 
+
   	const [isLoading, setIsLoading] = useState(true);
   	const [auth, setAuthState] = useState({});
 
-  	// Get current auth state from AsyncStorage
+
+  	// Get current auth state
   	const getAuthState = async () => {
     	try {
 			
@@ -37,48 +41,125 @@ const AuthProvider = ({ children }) => {
 
 			setIsLoading(false);
 
+			console.info('Get auth state');
+
     	} catch (error) {
+
+			// Error retriving token or user data
+			// Go to login
       		setAuthState({});
 			setIsLoading(false);
+
     	}
   	};
 
-  	// Update AsyncStorage & context state
+
+	
+  	// Update auth state
   	const setAuth = async (data) => {
-    	try {
+		
+		return new Promise ( async (resolve, reject) => {
+			try {
 
-			const {token, ...data_without_token} = data;
+				if(!data){
+					throw new Error('empty data');
+				}
 
-			await EncryptedStorage.setItem('@token', data.token);
+				// New object without token
+				const {token, ...data_without_token} = data;
 
-			await AsyncStorage.setItem('@user', JSON.stringify(data_without_token));
+				await EncryptedStorage.setItem('@token', data.token);
 
-			// Configure axios headers
-			configureAxiosHeaders(data.token);
+				await AsyncStorage.setItem('@user', JSON.stringify(data_without_token));
 
-			setAuthState(data);
+				// Configure axios headers
+				configureAxiosHeaders(data.token);
 
-    	} catch (error) {
-      		Promise.reject(error);
-    	}
+				setAuthState(data);
+
+				console.info('Auth setted');
+
+				resolve();
+
+			} catch (error) {
+				reject(error);
+				console.error(error);
+			}
+		});
+		
   	};
+
 
 
 	const logOut = async () => {
 		try {
 
-			await EncryptedStorage.removeItem('@token');
-
-			await AsyncStorage.removeItem('@user');
-
+			await axios.post(API.LOGOUT);
 			configureAxiosHeaders('');
 
+			console.info('User logout');
+
+			clearUserData();
+
+		} catch (error){
+
+            if(error.response){
+
+				switch (error.response.status){
+
+					case 401:
+						// Unauthenticated
+						// Finish logout
+						configureAxiosHeaders('');
+						clearUserData();
+						break;
+					
+					default:
+						Alert.alert(
+							'Ha ocurrido un error',
+							'Compruebe su conexión de internet',
+							[{ text: 'Cancel', style: 'cancel' }],
+							{ cancelable: true }
+						);
+						
+				}
+
+            } else {
+                Alert.alert(
+					'Ha ocurrido un error',
+					'Compruebe su conexión de internet',
+					[{ text: 'Cancel', style: 'cancel' }],
+					{ cancelable: true }
+				);
+            }
+
+            console.error(error);
+
+		}
+	};
+
+
+
+	const clearUserData = async () => {
+		try {
+
+			await EncryptedStorage.clear();
+			
+			await AsyncStorage.clear();
+
 			setAuthState({});
+
+			console.info('User data cleared');
 			
 		} catch (error){
-			Promise.reject(error);
+			
+			// There was an error on the native side
+			// Finish clear user data
+			setAuthState({});
+			console.error(error);
+
 		}
-	}
+	};
 
 
   	useEffect(() => {
@@ -86,8 +167,9 @@ const AuthProvider = ({ children }) => {
   	}, []);
 
 
+
   	return (
-    	<AuthContext.Provider value={{ auth, setAuth, isLoading, logOut }}>
+    	<AuthContext.Provider value={{ isLoading, auth, setAuth, logOut, clearUserData }}>
       		{children}
     	</AuthContext.Provider>
   	);

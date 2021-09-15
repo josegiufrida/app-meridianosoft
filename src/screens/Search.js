@@ -1,11 +1,12 @@
-import axios from 'axios';
-import React, { useState, useEffect }  from 'react';
+import React, { useState, useEffect, useContext }  from 'react';
 import { StyleSheet, ScrollView, Text, View, Alert } from 'react-native';
 
+import axios from 'axios';
 import SearchInput from '../components/atoms/SearchInput';
 import SearchFilter from '../components/molecules/SearchFilter';
 import Results from '../components/organisms/Results';
 import API from '../utils/api';
+import { AuthContext } from '../utils/AuthContext';
 
 
 
@@ -13,15 +14,21 @@ import API from '../utils/api';
 
 const Search = ({table}) => {
 
+    
     const [search, setSearch] = useState(null);
     const [filters, setFilters] = useState(null);
     const [selectedFilter, setSelectedFilter] = useState(null);
+
     const [error, setError] = useState(false);
+    const [errorMessage, setErrorMessage] = useState(null);
+
+    const { clearUserData } = useContext(AuthContext);
 
 
     useEffect(() => {
         getFilters();
     }, []);
+
 
     const getFilters = async () => {
         try {
@@ -36,8 +43,37 @@ const Search = ({table}) => {
             setFilters(filtros);
 
         } catch (error) {
-            console.log(error);
+
+            if(error.response){
+
+                var error_message = error.response.data?.message || 'Ha ocurrido un error';
+
+				switch (error.response.status){
+
+					case 401:
+						// Unauthenticated
+                        // Back to login
+                        clearUserData();
+						break;
+
+                    case 404:
+                        // Table not found
+                        setErrorMessage(error_message);
+                        break;
+                
+					default:
+                        setErrorMessage(error_message);
+					
+				}
+
+            } else {
+                setErrorMessage('Ha ocurrido un error');
+            }
+            
             setError(true);
+
+            console.error(error);
+
         }
     };
 

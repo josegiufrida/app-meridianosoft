@@ -20,7 +20,7 @@ function Login({ navigation }) {
     const refPassword = useRef();
 
     
-	const loginApi = async () => {
+	const logIn = async () => {
         try {
 
             const response = await axios.post(API.LOGIN, {
@@ -29,40 +29,61 @@ function Login({ navigation }) {
 				'device': Platform.OS
             });
             
-            // Save
-            setAuth(await response.data);
+            // Save user data
+            setAuth(await response.data).catch(error => {
+                throw new Error();
+            });
 
         } catch (error) {
 
-            if (error.response) {
+            if(error.response){
 
-                // Username or password empty
-                if(error.response.status === 422){
-                    if(error.response.data.errors?.username){
-                        // Border
-                    }
+                var error_message = error.response.data?.message || 'Ha ocurrido un error';
 
-                    if(error.response.data.errors?.password){
-                        // Border
-                    }
+				switch (error.response.status){
 
-                    setErrorMessage('Los datos ingresados son incorrectos');
-                }
+					case 401:
+						// User or password incorrect
+                            // BORDER
+                            // BORDER
+                        setErrorMessage(error_message);
+						break;
+                    
+                    case 403:
+                        // User inactive
+                        setErrorMessage(error_message);
+                        break;
+                    
+                    case 404:
+                        // Company not found
+                        setErrorMessage(error_message);
+                        break;
+                    
+                    case 422:
+                        // Invalid data or empty
+                        if(error.response.data?.errors?.username){
+                            // BORDER
+                        }
+    
+                        if(error.response.data?.errors?.password){
+                            // BORDER
+                        }
+                        setErrorMessage(error_message);
+                        break;
+					
 
-                // Username or password incorrect
-                if(error.response.status === 401){
-                    if(error.response.error === 'invalid-credentials'){
-                        //Border
-                        //Border
-                        setErrorMessage(error.response.messge);
-                    }
-                }
+					default:
+						setErrorMessage(error_message);
+					
+				}
+
             } else {
                 setErrorMessage('Ha ocurrido un error');
             }
 
-            console.error(error);
             setError(true);
+            console.error(error);
+
         }
     };
 
@@ -101,11 +122,11 @@ function Login({ navigation }) {
                 selectionColor={colors.primary}
                 placeholderTextColor={colors.textSecondary}
                 returnKeyType={'done'}
-                onSubmitEditing={loginApi}
+                onSubmitEditing={logIn}
             />
 
             <Button
-                onPress={loginApi}
+                onPress={logIn}
                 title='Ingresar'
                 color='#841584'
             />
