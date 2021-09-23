@@ -178,7 +178,7 @@ const Results = ({search, filter}) => {
 
 
     return (
-        <View style={{flex: 1, justifyContent: 'center'}}>
+        <View style={{flex: 1, justifyContent: 'center', marginTop: 11}}>
 
             { error ? 
             

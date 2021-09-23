@@ -26,6 +26,7 @@ const SearchFilter = ({filters, setFilter, selected}) => {
 				renderItem={renderItem}
 				horizontal={true}
 				contentContainerStyle={{paddingVertical: 10}}
+				showsHorizontalScrollIndicator={false}
 			/>
 
 		</View>

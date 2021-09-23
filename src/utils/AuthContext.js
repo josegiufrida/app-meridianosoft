@@ -26,10 +26,10 @@ const AuthProvider = ({ children }) => {
   	// Get current auth state
   	const getAuthState = async () => {
     	try {
-			
-     		const token = await EncryptedStorage.getItem('@token');
 
-			const user = JSON.parse( await AsyncStorage.getItem('@user') || {});
+			const token = await EncryptedStorage.getItem('@token');
+
+			const user = JSON.parse( await AsyncStorage.getItem('@user') || '{}');
 
 			// Configure axios headers
 			configureAxiosHeaders(token);
@@ -41,7 +41,7 @@ const AuthProvider = ({ children }) => {
 
 			setIsLoading(false);
 
-			console.info('Get auth state');
+			console.info('Get Auth State');
 
     	} catch (error) {
 
@@ -49,6 +49,7 @@ const AuthProvider = ({ children }) => {
 			// Go to login
       		setAuthState({});
 			setIsLoading(false);
+			console.error(error);
 
     	}
   	};
@@ -77,7 +78,7 @@ const AuthProvider = ({ children }) => {
 
 				setAuthState(data);
 
-				console.info('Auth setted');
+				console.info('Auth Setted');
 
 				resolve();
 
@@ -97,7 +98,7 @@ const AuthProvider = ({ children }) => {
 			await axios.post(API.LOGOUT);
 			configureAxiosHeaders('');
 
-			console.info('User logout');
+			console.info('User Logout');
 
 			clearUserData();
 
@@ -149,7 +150,7 @@ const AuthProvider = ({ children }) => {
 
 			setAuthState({});
 
-			console.info('User data cleared');
+			console.info('User Data Cleared');
 			
 		} catch (error){
 			

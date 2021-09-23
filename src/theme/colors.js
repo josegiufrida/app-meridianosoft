@@ -20,6 +20,19 @@ const colors = {
     orange: '#FE9518',
     red: '#FC3557',
     violet: '#623CE6',
+
+    menu: {
+        clientes: '#623CE6',
+        proveedores: '#195EC8',
+        articulos: '#FE9518',
+        saldos: '#38C1A3',
+        comprobantes: '#FC3557',
+        default: '#195EC8',
+    },
+
+    statusBar: '#195EC8',
+
 }
+
 
 export default colors;

@@ -1,8 +1,9 @@
 import React, { useContext } from 'react';
+import { Alert, Easing, InteractionManager  } from "react-native";
 
 import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-
+import { createStackNavigator, TransitionSpecs, HeaderStyleInterpolators, CardStyleInterpolators } from '@react-navigation/stack';
+//import { fromLeft } from 'react-navigation-transitions';
 
 // Import screens
 import LoadingScreen from '../../src/screens/Loading';
@@ -11,24 +12,35 @@ import HomeScreen from '../../src/screens/Home';
 import SearchScreen from '../../src/screens/Search';
 import ClientScreen from '../../src/screens/Client';
 import { AuthContext } from '../utils/AuthContext';
+import SplashScreen from 'react-native-splash-screen';
 
 
 
-const Stack = createNativeStackNavigator();
+//const Stack = createNativeStackNavigator();
+const Stack = createStackNavigator();
 
 function Navigator() {
 
     const { auth, isLoading } = useContext(AuthContext);
 
+    if(!isLoading){
+        // Hide splash screen after all transitions finish
+        InteractionManager.runAfterInteractions(() => {
+            SplashScreen.hide();
+        });
+    }
+
     return (
         <NavigationContainer>
-            <Stack.Navigator>
 
-                { isLoading ?
+            <Stack.Navigator
+                screenOptions={{
+                    headerShown: false,
+                    cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+                }}
+            > 
 
-                    <Stack.Screen name="Loading" component={LoadingScreen} />
-
-                    :
+                { !isLoading &&
 
                     auth.token ? (
                         <>
@@ -43,6 +55,7 @@ function Navigator() {
                 }
 
             </Stack.Navigator>
+
         </NavigationContainer>
     );
 }

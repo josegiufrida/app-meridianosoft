@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, ScrollView, Text, View } from 'react-native';
+import SvgIcons from '../../assets/svg/SvgIcons';
 
 
 const hexToRgbA = (hex, opacity) => {
@@ -17,9 +18,9 @@ const hexToRgbA = (hex, opacity) => {
 }
 
 
-const Icon = ({accentColor}) => (
+const Icon = ({src, accentColor}) => (
     <View style={[styles.container, {backgroundColor: hexToRgbA(accentColor, 0.15)}]}>
-        <Text>I</Text>
+        <SvgIcons src={src} size={24} color={accentColor} />
     </View>
 );
 

@@ -1,22 +1,24 @@
 import * as React from 'react';
-import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 import Icon from '../atoms/Icon';
 import Arrow from '../atoms/Arrow';
+import fonts from '../../theme/fonts';
+import colors from '../../theme/colors';
 
 
-const Item = ({name, search, accentColor}) => {
+const Item = ({collection, accentColor}) => {
 
     const navigation = useNavigation();
 
     return (
         <TouchableOpacity 
             style={styles.container}
-            onPress={() => navigation.navigate('Search', {search: search})}
+            onPress={() => navigation.navigate('Search', {collection: collection})}
         >
-            <Icon accentColor={accentColor}></Icon>
-            <Text style={styles.title}>{name}</Text>
+            <Icon src={collection.collection_name} accentColor={accentColor}></Icon>
+            <Text style={styles.title}>{collection.name}</Text>
             <Arrow />
         </TouchableOpacity>
     );
@@ -32,12 +34,15 @@ const styles = StyleSheet.create({
         marginBottom: 16,
         padding: 14,
 
-        backgroundColor: '#FFFFFF',
+        backgroundColor: colors.white,
         borderRadius: 6,
+        elevation: 1.25
     },
 
     title:{
         flex: 1,
+        fontFamily: fonts.type.poppinsMedium,
+        paddingTop: 3,
         fontSize: 17,
         marginLeft: 14,
     },

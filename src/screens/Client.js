@@ -7,6 +7,8 @@ import colors from '../theme/colors';
 import ErrorMsg from '../components/molecules/ErrorMsg';
 import API from '../utils/api';
 import { AuthContext } from '../utils/AuthContext';
+import HeaderNav from '../components/molecules/HeaderNav';
+import fonts from '../theme/fonts';
 
 
 const Client = ({ route, navigation }) => {
@@ -85,63 +87,85 @@ const Client = ({ route, navigation }) => {
 
 
     return(
-        <View style={styles.container}>
-            
-            <Text style={styles.title}>{razon_social}</Text>
-            <Text style={styles.subTitle}>{`Cod: ${id_cliente}`}</Text>
+        <View style={{flex: 1, backgroundColor: colors.primary}}>
 
+            <View style={styles.header}>
 
-            { error ?
+                <HeaderNav />
 
-                <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-                    <ErrorMsg message={errorMessage}/>
+                <View style={{marginTop: 30, alignItems: 'center'}}>
+                    <Text style={styles.title}>{razon_social}</Text>
+                    <Text style={styles.subTitle}>{`Cod: ${id_cliente}`}</Text>
                 </View>
 
-                :
+            </View>
 
-                data ?
 
-                    <ScrollView>
-                        <DetailItem title={'domicilio'} subTitle={`${data.domicilio}\n${data.localidad}  •  ${data.zona}\n${data.provincia}  •  ${data.cp}`} />
-                        <DetailItem title={'telefono'} subTitle={data.telefono} />
-                        <DetailItem title={'CIUT'} subTitle={data.cuit} />
-                        <DetailItem title={'vendedor'} subTitle={data.vendedor} />
-                        <DetailItem title={'email'} subTitle={data.email} />
-                        <DetailItem title={'lista'} subTitle={`ID: ${data.id_lista}  •  ${data.lista}`} />
-                        <DetailItem title={'pago'} subTitle={data.pago} />
-                        <DetailItem title={'observacion'} subTitle={data.observacion} />
-                        <DetailItem title={'contacto'} subTitle={data.contacto} />
-                        <DetailItem title={'bonificacion'} subTitle={data.bonificacion} />
-                        <DetailItem title={'saldo'} subTitle={data.saldo} />
-                        <DetailItem title={'limite credito'} subTitle={data.limite_credito} />
-                    </ScrollView>
+            <View style={styles.container}>
+                
+                { error ?
 
-                    :
-                    
                     <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-                        <ActivityIndicator size='large' color={colors.primary} />
+                        <ErrorMsg message={errorMessage}/>
                     </View>
 
-            }
+                    :
 
-        </View> 
+                    data ?
+
+                        <ScrollView>
+                            <DetailItem title={'domicilio'} subTitle={`${data.domicilio}\n${data.localidad}  •  ${data.zona}\n${data.provincia}  •  ${data.cp}`} />
+                            <DetailItem title={'telefono'} subTitle={data.telefono} />
+                            <DetailItem title={'CIUT'} subTitle={data.cuit} />
+                            <DetailItem title={'vendedor'} subTitle={data.vendedor} />
+                            <DetailItem title={'email'} subTitle={data.email} />
+                            <DetailItem title={'lista'} subTitle={`ID: ${data.id_lista}  •  ${data.lista}`} />
+                            <DetailItem title={'pago'} subTitle={data.pago} />
+                            <DetailItem title={'observacion'} subTitle={data.observacion} />
+                            <DetailItem title={'contacto'} subTitle={data.contacto} />
+                            <DetailItem title={'bonificacion'} subTitle={data.bonificacion} />
+                            <DetailItem title={'saldo'} subTitle={data.saldo} />
+                            <DetailItem title={'limite credito'} subTitle={data.limite_credito} />
+                        </ScrollView>
+
+                        :
+                        
+                        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+                            <ActivityIndicator size='large' color={colors.primary} />
+                        </View>
+
+                }
+
+            </View>
+
+        </View>
     );
 };
 
 
 const styles = StyleSheet.create({
+    header: {
+        paddingTop: 36,
+        paddingBottom: 24,
+    },
+
     container: {
         flex: 1,
-        padding: 14,
-        flexDirection: 'column'
+        paddingHorizontal: 14,
+        flexDirection: 'column',
+        backgroundColor: colors.backgroundColor,
     },
 
     title: {
-        fontSize: 24
+        fontFamily: fonts.type.poppinsMedium,
+        fontSize: 24,
+        color: colors.white,
     },
 
     subTitle: {
-        fontSize: 16
+        fontFamily: fonts.type.poppinsMedium,
+        fontSize: 16,
+        color: colors.white,
     },
 });
 

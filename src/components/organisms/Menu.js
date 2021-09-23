@@ -1,19 +1,29 @@
 import React from 'react';
-import { StyleSheet, ScrollView, Text, View } from 'react-native';
+import { StyleSheet, ScrollView, Text, View, Alert, FlatList } from 'react-native';
 import colors from '../../theme/colors';
 
 import Item from '../molecules/Item';
 
 
-const Menu = () => {
+const Menu = ({collections}) => {
+
+    const defaultColor = (name) => {
+        return colors.menu[name] || colors.menu.default;
+    }
+
+    const renderItem = ({item}) => (
+        <Item collection={item} accentColor={defaultColor(item.collection_name)} />
+    );
+
     return(
-        <ScrollView>
-            <Item name={'Clientes'} table={'clientes'} accentColor={colors.violet}/>
-            <Item name={'Proveerdores'} table={'proveerdores'} accentColor={colors.blue}/>
-            <Item name={'Saldos'} table={'saldos'} accentColor={colors.green}/>
-            <Item name={'Articulos'} table={'articulos'} accentColor={colors.orange}/>
-            <Item name={'Comprobantes'} table={'comprobantes'} accentColor={colors.red}/>
-        </ScrollView>
+
+        <FlatList
+            data={collections}
+            extraData={collections}
+            renderItem={renderItem}
+            keyExtractor={item => item.collection_id}
+        />
+
     );
 };
 

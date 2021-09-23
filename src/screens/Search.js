@@ -7,12 +7,14 @@ import SearchFilter from '../components/molecules/SearchFilter';
 import Results from '../components/organisms/Results';
 import API from '../utils/api';
 import { AuthContext } from '../utils/AuthContext';
+import HeaderNav from '../components/molecules/HeaderNav';
+import colors from '../theme/colors';
 
 
 
 
 
-const Search = ({table}) => {
+const Search = ({collection}) => {
 
     
     const [search, setSearch] = useState(null);
@@ -81,15 +83,24 @@ const Search = ({table}) => {
 
     return(
         
-        <View style={styles.container}>
+        <View style={{flex: 1, backgroundColor: colors.primary}}>
 
-            <SearchInput setSearch={setSearch} />
+            <View style={styles.header}>
+                <HeaderNav />
+                <View style={{marginTop: 30, paddingHorizontal: 14}}>
+                    <SearchInput setSearch={setSearch} />
+                </View>
+            </View>
 
-            <SearchFilter filters={filters} setFilter={setSelectedFilter} selected={selectedFilter} />
+            <View style={styles.container}>
+
+                <SearchFilter filters={filters} setFilter={setSelectedFilter} selected={selectedFilter} />
             
-            <Results search={search} filter={selectedFilter} />
+                <Results search={search} filter={selectedFilter} />
             
-        </View> 
+            </View>
+
+        </View>
     );
 };
 
@@ -98,7 +109,14 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         padding: 14,
+        paddingTop: 11,
         flexDirection: 'column',
+        backgroundColor: colors.backgroundColor,
+    },
+
+    header: {
+        paddingTop: 36,
+        paddingBottom: 21,
     },
 });
 
