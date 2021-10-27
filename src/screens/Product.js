@@ -20,9 +20,9 @@ const Client = ({ route, navigation }) => {
 
     const [errorMessage, setErrorMessage] = useState(null);
 
-    const { collection, filters } = route.params;
+	const { collection, filters } = route.params;
 
-    const { id_cliente, razon_social } = route.params.data;
+    const { id_articulo, descripcion } = route.params.data;
 
     const { clearUserData } = useContext(AuthContext);
 
@@ -34,8 +34,8 @@ const Client = ({ route, navigation }) => {
 
     const queryApi = async () => {
         try {
-
-            const response = await axios.get(API.BASE + collection.search + '/' + id_cliente);
+	
+            const response = await axios.get(API.BASE + collection.search + '/' + id_articulo);
 
             var json = await response.data;
 
@@ -96,8 +96,8 @@ const Client = ({ route, navigation }) => {
                 <HeaderNav title={collection.title} />
 
                 <View style={{marginTop: 30, alignItems: 'center'}}>
-                    <Text style={styles.title}>{razon_social}</Text>
-                    <Text style={styles.subTitle}>{`Cod: ${id_cliente}`}</Text>
+                    <Text style={styles.title}>{descripcion}</Text>
+                    <Text style={styles.subTitle}>{`Cod: ${id_articulo}`}</Text>
                 </View>
 
             </View>
@@ -116,18 +116,11 @@ const Client = ({ route, navigation }) => {
                     data ?
 
                         <ScrollView>
-                            <DetailItem title={'Domicilio'} info={`${data.domicilio}\n${data.localidad}  •  ${data.zona}\n${data.provincia}  •  ${data.cp}`} icon={'domicilio'} />
-                            <DetailItem title={filters.telefono} info={data.telefono} icon={'telefono'} />
-                            <DetailItem title={filters.cuit} info={data.cuit} icon={'cuit'} />
-                            <DetailItem title={filters.vendedor} info={data.vendedor} icon={'vendedor'} />
-                            <DetailItem title={filters.email} info={data.email} icon={'email'} />
-                            <DetailItem title={filters.lista} info={`ID: ${data.id_lista}  •  ${data.lista}`} icon={'lista'} />
-                            <DetailItem title={filters.pago} info={data.pago} icon={'pago'} />
-                            <DetailItem title={filters.observacion} info={data.observacion} icon={'observacion'} />
-							<DetailItem title={filters.contacto} info={data.contacto} icon={'contacto'} />
-                            <DetailItem title={filters.bonificacion} info={data.bonificacion} icon={'bonificacion'} />
-                            <DetailItem title={filters.saldo_final} info={data.saldo_final} icon={'saldo_final'} />
-                            <DetailItem title={filters.limite_credito} info={data.limite_credito} icon={'limite_credito'} />
+							<DetailItem title={filters.grupo} info={`ID: ${data.id_grupo}  •  ${data.grupo}`} icon={'grupo'} />
+                            <DetailItem title={filters.subgrupo} info={`ID: ${data.id_subgrupo}  •  ${data.subgrupo}`} icon={'subgrupo'} />
+                            <DetailItem title={filters.iva} info={data.iva} icon={'iva'} />
+                            <DetailItem title={filters.codigo_barra} info={data.codigo_barra} icon={'codigo_barra'} />
+                            <DetailItem title={filters.stock} info={data.stock} icon={'stock'} />
                         </ScrollView>
 
                         :
@@ -162,7 +155,7 @@ const styles = StyleSheet.create({
         fontFamily: fonts.type.poppinsMedium,
         fontSize: 24,
         color: colors.white,
-        paddingHorizontal: 14,
+		paddingHorizontal: 14,
         textAlign: 'center',
     },
 

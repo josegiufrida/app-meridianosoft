@@ -20,9 +20,9 @@ const Client = ({ route, navigation }) => {
 
     const [errorMessage, setErrorMessage] = useState(null);
 
-    const { collection, filters } = route.params;
+	const { collection, filters } = route.params;
 
-    const { id_cliente, razon_social } = route.params.data;
+    const { id_proveedor, razon_social } = route.params.data;
 
     const { clearUserData } = useContext(AuthContext);
 
@@ -35,7 +35,7 @@ const Client = ({ route, navigation }) => {
     const queryApi = async () => {
         try {
 
-            const response = await axios.get(API.BASE + collection.search + '/' + id_cliente);
+            const response = await axios.get(API.BASE + collection.search + '/' + id_proveedor);
 
             var json = await response.data;
 
@@ -97,7 +97,7 @@ const Client = ({ route, navigation }) => {
 
                 <View style={{marginTop: 30, alignItems: 'center'}}>
                     <Text style={styles.title}>{razon_social}</Text>
-                    <Text style={styles.subTitle}>{`Cod: ${id_cliente}`}</Text>
+                    <Text style={styles.subTitle}>{`Cod: ${id_proveedor}`}</Text>
                 </View>
 
             </View>
@@ -116,18 +116,14 @@ const Client = ({ route, navigation }) => {
                     data ?
 
                         <ScrollView>
-                            <DetailItem title={'Domicilio'} info={`${data.domicilio}\n${data.localidad}  •  ${data.zona}\n${data.provincia}  •  ${data.cp}`} icon={'domicilio'} />
+                            <DetailItem title={'Domicilio'} info={`${data.domicilio}\n${data.localidad}  •  \n${data.provincia}  •  ${data.cp}`} icon={'domicilio'} />
                             <DetailItem title={filters.telefono} info={data.telefono} icon={'telefono'} />
                             <DetailItem title={filters.cuit} info={data.cuit} icon={'cuit'} />
-                            <DetailItem title={filters.vendedor} info={data.vendedor} icon={'vendedor'} />
                             <DetailItem title={filters.email} info={data.email} icon={'email'} />
-                            <DetailItem title={filters.lista} info={`ID: ${data.id_lista}  •  ${data.lista}`} icon={'lista'} />
                             <DetailItem title={filters.pago} info={data.pago} icon={'pago'} />
                             <DetailItem title={filters.observacion} info={data.observacion} icon={'observacion'} />
 							<DetailItem title={filters.contacto} info={data.contacto} icon={'contacto'} />
-                            <DetailItem title={filters.bonificacion} info={data.bonificacion} icon={'bonificacion'} />
                             <DetailItem title={filters.saldo_final} info={data.saldo_final} icon={'saldo_final'} />
-                            <DetailItem title={filters.limite_credito} info={data.limite_credito} icon={'limite_credito'} />
                         </ScrollView>
 
                         :

@@ -11,6 +11,8 @@ import LoginScreen from '../../src/screens/Login';
 import HomeScreen from '../../src/screens/Home';
 import SearchScreen from '../../src/screens/Search';
 import ClientScreen from '../../src/screens/Client';
+import SupplierScreen from '../../src/screens/Supplier';
+import ProductScreen from '../../src/screens/Product';
 import { AuthContext } from '../utils/AuthContext';
 import SplashScreen from 'react-native-splash-screen';
 
@@ -47,6 +49,8 @@ function Navigator() {
                             <Stack.Screen name="Home" component={HomeScreen} options={{ title: 'Perro' }} />
                             <Stack.Screen name="Search" component={SearchScreen} />
                             <Stack.Screen name="Client" component={ClientScreen} />
+                            <Stack.Screen name="Supplier" component={SupplierScreen} />
+                            <Stack.Screen name="Product" component={ProductScreen} />
                         </>
                     ) : (
                         <Stack.Screen name="Login" component={LoginScreen} />

@@ -17,8 +17,8 @@ const Item = ({collection, accentColor}) => {
             style={styles.container}
             onPress={() => navigation.navigate('Search', {collection: collection})}
         >
-            <Icon src={collection.collection_name} accentColor={accentColor}></Icon>
-            <Text style={styles.title}>{collection.name}</Text>
+            <Icon src={collection.name} accentColor={accentColor}></Icon>
+            <Text style={styles.title}>{collection.title}</Text>
             <Arrow />
         </TouchableOpacity>
     );

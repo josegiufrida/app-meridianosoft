@@ -14,9 +14,11 @@ import colors from '../theme/colors';
 
 
 
-const Search = ({collection}) => {
+const Search = ({ route }) => {
 
     
+    const { collection } = route.params;
+
     const [search, setSearch] = useState(null);
     const [filters, setFilters] = useState(null);
     const [selectedFilter, setSelectedFilter] = useState(null);
@@ -34,8 +36,8 @@ const Search = ({collection}) => {
 
     const getFilters = async () => {
         try {
-
-            const response = await axios.get(API.FILTERS.CLIENTS);
+            
+            const response = await axios.get(API.BASE + collection.filters);
 
             const filtros = await response.data;
 
@@ -86,7 +88,7 @@ const Search = ({collection}) => {
         <View style={{flex: 1, backgroundColor: colors.primary}}>
 
             <View style={styles.header}>
-                <HeaderNav />
+                <HeaderNav title={collection.title} />
                 <View style={{marginTop: 30, paddingHorizontal: 14}}>
                     <SearchInput setSearch={setSearch} />
                 </View>
@@ -96,7 +98,7 @@ const Search = ({collection}) => {
 
                 <SearchFilter filters={filters} setFilter={setSelectedFilter} selected={selectedFilter} />
             
-                <Results search={search} filter={selectedFilter} />
+                <Results collection={collection} search={search} filters={filters} selectedFilter={selectedFilter} />
             
             </View>
 

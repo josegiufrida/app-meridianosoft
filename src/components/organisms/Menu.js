@@ -12,7 +12,7 @@ const Menu = ({collections}) => {
     }
 
     const renderItem = ({item}) => (
-        <Item collection={item} accentColor={defaultColor(item.collection_name)} />
+        <Item collection={item} accentColor={defaultColor(item.name)} />
     );
 
     return(

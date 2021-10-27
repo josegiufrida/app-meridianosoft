@@ -3,6 +3,7 @@ import { StyleSheet, View, Text, TouchableOpacity, TextInput } from 'react-nativ
 import { useNavigation } from '@react-navigation/native';
 import Highlighter from 'react-native-highlight-words';
 
+import { getScreenName } from '../../utils/screens';
 import Arrow from '../atoms/Arrow';
 import colors from '../../theme/colors';
 import DetailIcon from '../atoms/DetailIcon';
@@ -10,16 +11,24 @@ import SvgIcons from '../../assets/svg/SvgIcons';
 import fonts from '../../theme/fonts';
 
 
-const Result = ({data, title, subTitle, search, filter, ocurrence}) => {
+const Result = ({ data, title, subTitle, collection, search, filters, selectedFilter, ocurrence }) => {
 
     const navigation = useNavigation();
 
     const initial_data = data;
 
+    const nextScreenName = getScreenName(collection.name);
+
+    function reduceFilters(){
+        return filters.reduce((ac, el) => {
+            return { ...ac, [el.id]: el.name };
+        }, {});
+    }
+
     return (
         <TouchableOpacity 
             style={styles.container}
-            onPress={() => navigation.navigate({ name: 'Client', params: data})}
+            onPress={() => navigation.navigate(nextScreenName, { data: data, collection: collection, filters: reduceFilters() })}
         >
             <View style={styles.result}>
 
@@ -41,7 +50,7 @@ const Result = ({data, title, subTitle, search, filter, ocurrence}) => {
                         <SvgIcons src={'search'} size={11} color={colors.primary} />
                     </View>
 
-                    <Text>{filter?.name}: </Text>
+                    <Text>{selectedFilter?.name}: </Text>
 
                     <Highlighter
                         highlightStyle={{color: colors.primary}}

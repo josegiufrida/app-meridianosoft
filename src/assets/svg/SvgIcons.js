@@ -720,19 +720,124 @@ const LogOut = ({size, color}) => (
 
 
 
+const Grupo = ({size, color}) => (
+	<Svg
+		width={size}
+		height={size}
+		viewBox="0 0 24 24"
+		strokeWidth={1.5}
+		stroke={color}
+		fill="none"
+		strokeLinecap="round"
+		strokeLinejoin="round"
+    >
+      	<Path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      	<Rect x={8} y={4} width={12} height={12} rx={2} />
+      	<Path d="M16 16v2a2 2 0 0 1 -2 2h-8a2 2 0 0 1 -2 -2v-8a2 2 0 0 1 2 -2h2" />
+    </Svg>
+);
+
+const Subgrupo = ({size, color}) => (
+	<Svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      strokeWidth={1.5}
+      stroke={color}
+      fill="none"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <Path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <Rect x={8} y={4} width={12} height={12} rx={2} />
+      <Rect x={4} y={8} width={12} height={12} rx={2} />
+    </Svg>
+);
+
+const Iva = ({size, color}) => (
+	<Svg
+		width={size}
+		height={size}
+		viewBox="0 0 24 24"
+		strokeWidth={1.5}
+		stroke={color}
+		fill="none"
+		strokeLinecap="round"
+		strokeLinejoin="round"
+    >
+		<Path stroke="none" d="M0 0h24v24H0z" fill="none" />
+		<Line x1={9} y1={14} x2={15} y2={8} />
+		<Circle cx={9.5} cy={8.5} r={0.5} fill="currentColor" />
+		<Circle cx={14.5} cy={13.5} r={0.5} fill="currentColor" />
+		<Path d="M5 21v-16a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v16l-3 -2l-2 2l-2 -2l-2 2l-2 -2l-3 2" />
+    </Svg>
+);
+
+const Codigobarra = ({size, color}) => (
+	<Svg
+		width={size}
+		height={size}
+		viewBox="0 0 24 24"
+		strokeWidth={1.5}
+		stroke={color}
+		fill="none"
+		strokeLinecap="round"
+		strokeLinejoin="round"
+    >
+		<Path stroke="none" d="M0 0h24v24H0z" fill="none" />
+		<Path d="M4 7v-1a2 2 0 0 1 2 -2h2" />
+		<Path d="M4 17v1a2 2 0 0 0 2 2h2" />
+		<Path d="M16 4h2a2 2 0 0 1 2 2v1" />
+		<Path d="M16 20h2a2 2 0 0 0 2 -2v-1" />
+		<Rect x={5} y={11} width={1} height={2} />
+		<Line x1={10} y1={11} x2={10} y2={13} />
+		<Rect x={14} y={11} width={1} height={2} />
+		<Line x1={19} y1={11} x2={19} y2={13} />
+    </Svg>
+);
+
+
+const Stock = ({size, color}) => (
+	<Svg
+		width={size}
+		height={size}
+		viewBox="0 0 24 24"
+		strokeWidth={1.5}
+		stroke={color}
+		fill="none"
+		strokeLinecap="round"
+		strokeLinejoin="round"
+    >
+		<Path stroke="none" d="M0 0h24v24H0z" fill="none" />
+		<Polyline points="12 3 20 7.5 20 16.5 12 21 4 16.5 4 7.5 12 3" />
+		<Line x1={12} y1={12} x2={20} y2={7.5} />
+		<Line x1={12} y1={12} x2={12} y2={21} />
+		<Line x1={12} y1={12} x2={4} y2={7.5} />
+		<Line x1={16} y1={5.25} x2={8} y2={9.75} />
+    </Svg>
+);
+
+
+
 const svgList = {
 	'domicilio': Home,
 	'telefono': Phone,
-	'CIUT': Id,
+	'cuit': Id,
 	'vendedor': Vendedor,
 	'observacion': Observacion,
 	'bonificacion': Bonificacion,
-	'limite credito': LimiteCredito,
+	'limite_credito': LimiteCredito,
 	'contacto': Contacto,
-	'saldo': Saldo,
+	'saldo_final': Saldo,
 	'email': Email,
 	'lista': Lista,
 	'pago': Pago,
+
+	'grupo': Grupo,
+	'subgrupo': Subgrupo,
+	'iva': Iva,
+	'codigo_barra': Codigobarra,
+	'stock': Stock,
 
 	'clientes': Clientes,
 	'proveedores': Proveedores,

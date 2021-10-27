@@ -11,8 +11,7 @@ import { AuthContext } from '../../utils/AuthContext';
 
 
 
-const Results = ({search, filter}) => {
-
+const Results = ({collection, search, filters, selectedFilter}) => {
 
     const [isLoading, setLoading] = useState(true);
 
@@ -35,14 +34,14 @@ const Results = ({search, filter}) => {
     
     useEffect(() => {
 
-        if(filter !== lastFilter && !search){
+        if(selectedFilter !== lastFilter && !search){
             return;
         }
 
         refreshQuery();
         queryApi(true);
 
-    }, [search, filter]);
+    }, [search, selectedFilter]);
 
 
     const refreshQuery = () => {
@@ -51,7 +50,7 @@ const Results = ({search, filter}) => {
         setIsLastPage(false);
         setError(false);
         setErrorMessage(null);
-        setLastFilter(filter);
+        setLastFilter(selectedFilter);
     };
 
 
@@ -60,10 +59,10 @@ const Results = ({search, filter}) => {
 
             var parms = new URLSearchParams({
                 search: search,
-                filter: filter?.id,
+                filter: selectedFilter?.id,
             });
 
-            var query_url = ( new_query ? API.CLIENTS + '?' + parms : pagination.next_page_url );
+            var query_url = ( new_query ? API.BASE + collection.search + '?' + parms : pagination.next_page_url );
 
             const response = await axios.get(query_url);
 
@@ -89,6 +88,8 @@ const Results = ({search, filter}) => {
         } catch (error) {
 
             if(error.response){
+
+                console.log(error.response);
 
                 var error_message = error.response.data?.message || 'Ha ocurrido un error';
 
@@ -161,13 +162,15 @@ const Results = ({search, filter}) => {
             { !isLoading &&
                 <Result
                     data={item}
-                    title={item.razon_social}
-                    subTitle={`Cod. ${item.id_cliente}`}
+                    title={item[collection.title_field]}
+                    subTitle={`Cod. ${item[collection.primary_key]}`}
 
+                    collection={collection}
                     search={search}
-                    filter={filter}
+                    filters={filters}
+                    selectedFilter={selectedFilter}
                     ocurrence={
-                        filter && filter.id != 'id_cliente' && search ? item[filter.id] : null
+                        selectedFilter && selectedFilter.id != collection.primary_key && search ? item[selectedFilter.id] : null
                     }
                 />
             }
@@ -198,7 +201,7 @@ const Results = ({search, filter}) => {
                         data={data}
                         extraData={data}
                         renderItem={renderItem}
-                        keyExtractor={item => item.id_cliente}
+                        keyExtractor={item => item[collection.primary_key]}
                         contentContainerStyle={{ flexGrow: 1 }}
                         onEndReached={() => endReached()}
                         ListFooterComponent={footerComponent}

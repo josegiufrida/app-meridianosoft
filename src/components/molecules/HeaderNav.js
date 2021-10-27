@@ -59,7 +59,7 @@ function HeaderNav({title}) {
 			</View>
 
 
-			<Text style={styles.title}>Listados</Text>
+			<Text style={styles.title}>{title}</Text>
 
 			
 			<View style={{flex: 1, alignItems: 'flex-end'}}>

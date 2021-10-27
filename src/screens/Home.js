@@ -18,7 +18,7 @@ function HomeScreen({ navigation }) {
         <View style={{flex: 1, backgroundColor: colors.primary}}>
 
             <View style={styles.header}>
-                <HeaderNav />
+                <HeaderNav title={'Listados'} />
             </View>
 
             <View style={styles.container}>

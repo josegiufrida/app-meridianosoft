@@ -1,20 +1,30 @@
-import * as React from 'react';
-import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, View, Text, TouchableOpacity, ToastAndroid, TouchableWithoutFeedback, Clipboard } from 'react-native';
 import colors from '../../theme/colors';
 
 import DetailIcon from '../atoms/DetailIcon';
 import capitalizeAll from '../../utils/utils';
 
-const DataItem = ({title, subTitle}) => {
+const DataItem = ({title, info, icon}) => {
+
+    function copy_value_to_clipboard(){
+        Clipboard.setString(info);
+        ToastAndroid.show('Copiado', ToastAndroid.SHORT);
+    }
 
     return (
-        <View style={styles.container}>
-            <DetailIcon src={title} />
-			<View style={{flex: 1, flexDirection: 'column', marginLeft: 14}}>
-                <Text style={styles.title}>{capitalizeAll(title)}</Text>
-                <Text style={styles.detail}>{subTitle}</Text>
+        <TouchableWithoutFeedback
+            delayLongPress={1000}
+            onLongPress={ () => copy_value_to_clipboard() }
+        >
+            <View style={styles.container}>
+                <DetailIcon src={icon} />
+                <View style={{flex: 1, flexDirection: 'column', marginLeft: 14}}>
+                    <Text style={styles.title}>{title}</Text>
+                    <Text style={styles.detail}>{info}</Text>
+                </View>
             </View>
-        </View>
+        </TouchableWithoutFeedback>
     );
 }
 
