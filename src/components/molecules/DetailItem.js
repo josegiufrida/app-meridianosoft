@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, ToastAndroid, TouchableWithoutFeedback, Clipboard } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, ToastAndroid, TouchableWithoutFeedback } from 'react-native';
 import colors from '../../theme/colors';
+import Clipboard from '@react-native-clipboard/clipboard';
 
 import DetailIcon from '../atoms/DetailIcon';
 import capitalizeAll from '../../utils/utils';
