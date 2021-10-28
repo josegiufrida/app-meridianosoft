@@ -3,6 +3,7 @@ import { StyleSheet, ScrollView, Text, View, ActivityIndicator, Alert } from 're
 import axios from 'axios';
 
 import DetailItem from '../components/molecules/DetailItem';
+import DetailPriceItem from '../components/molecules/DetailPriceItem';
 import colors from '../theme/colors';
 import ErrorMsg from '../components/molecules/ErrorMsg';
 import API from '../utils/api';
@@ -116,6 +117,7 @@ const Client = ({ route, navigation }) => {
                     data ?
 
                         <ScrollView>
+                            <DetailPriceItem info={data.precio} />
 							<DetailItem title={filters.grupo} info={`ID: ${data.id_grupo}  •  ${data.grupo}`} icon={'grupo'} />
                             <DetailItem title={filters.subgrupo} info={`ID: ${data.id_subgrupo}  •  ${data.subgrupo}`} icon={'subgrupo'} />
                             <DetailItem title={filters.iva} info={data.iva} icon={'iva'} />

@@ -6,6 +6,7 @@ import DetailItem from '../components/molecules/DetailItem';
 import colors from '../theme/colors';
 import ErrorMsg from '../components/molecules/ErrorMsg';
 import API from '../utils/api';
+import { roundNumber } from '../utils/utils';
 import { AuthContext } from '../utils/AuthContext';
 import HeaderNav from '../components/molecules/HeaderNav';
 import fonts from '../theme/fonts';
@@ -123,7 +124,7 @@ const Client = ({ route, navigation }) => {
                             <DetailItem title={filters.pago} info={data.pago} icon={'pago'} />
                             <DetailItem title={filters.observacion} info={data.observacion} icon={'observacion'} />
 							<DetailItem title={filters.contacto} info={data.contacto} icon={'contacto'} />
-                            <DetailItem title={filters.saldo_final} info={data.saldo_final} icon={'saldo_final'} />
+                            <DetailItem title={filters.saldo_final} info={roundNumber(data.saldo_final)} icon={'saldo_final'} />
                         </ScrollView>
 
                         :

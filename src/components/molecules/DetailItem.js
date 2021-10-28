@@ -22,7 +22,7 @@ const DataItem = ({title, info, icon}) => {
                 <DetailIcon src={icon} />
                 <View style={{flex: 1, flexDirection: 'column', marginLeft: 14}}>
                     <Text style={styles.title}>{title}</Text>
-                    <Text style={styles.detail}>{info}</Text>
+                    <Text style={styles.detail}>{info || '-'}</Text>
                 </View>
             </View>
         </TouchableWithoutFeedback>
