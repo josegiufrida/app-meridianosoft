@@ -1,18 +1,19 @@
 
 import React, { useState, useContext, useRef } from 'react';
-import { StyleSheet, View, Text, Button, TextInput, Platform, TouchableOpacity, Image, TouchableWithoutFeedback } from 'react-native';
+import { StyleSheet, View, Text, StatusBar, TextInput, Platform, TouchableOpacity, Image, TouchableWithoutFeedback } from 'react-native';
 import colors from '../theme/colors';
 import axios from 'axios';
 import API from '../utils/api';
 import { AuthContext } from '../utils/AuthContext';
 import fonts from '../theme/fonts';
 import DevelopedBy from '../components/atoms/DevelopedBy';
-import { StatusBar } from 'react-native';
 import SvgIcons from '../assets/svg/SvgIcons';
+
+
 
 function Login({ navigation }) {
 
-    StatusBar.setBackgroundColor(colors.backgroundColor, false);
+    StatusBar.setBackgroundColor(colors.backgroundColor, true);
 
     const { setAuth } = useContext(AuthContext);
 

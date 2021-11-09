@@ -4,7 +4,7 @@ import colors from '../../theme/colors';
 import Clipboard from '@react-native-clipboard/clipboard';
 
 import DetailIcon from '../atoms/DetailIcon';
-import capitalizeAll from '../../utils/utils';
+import capitalizeAll, { roundNumber } from '../../utils/utils';
 
 const DataItem = ({info}) => {
 
@@ -15,7 +15,7 @@ const DataItem = ({info}) => {
 
 	const renderItem = info.map( item => {
 
-		const precio = `$${item.precio}`;
+		const precio = '$' + roundNumber(item.precio);
 
         return (
 			<View key={item.precio + item.lista}>

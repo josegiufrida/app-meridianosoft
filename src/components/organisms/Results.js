@@ -13,6 +13,7 @@ import { AuthContext } from '../../utils/AuthContext';
 
 const Results = ({collection, search, filters, selectedFilter}) => {
 
+
     const [isLoading, setLoading] = useState(true);
 
     const [data, setData] = useState([]);
@@ -181,7 +182,7 @@ const Results = ({collection, search, filters, selectedFilter}) => {
 
 
     return (
-        <View style={{flex: 1, justifyContent: 'center', marginTop: 11}}>
+        <View style={{flex: 1, justifyContent: 'center', marginTop: 11, marginHorizontal: -14}}>
 
             { error ? 
             
@@ -202,10 +203,10 @@ const Results = ({collection, search, filters, selectedFilter}) => {
                         extraData={data}
                         renderItem={renderItem}
                         keyExtractor={item => item[collection.primary_key]}
-                        contentContainerStyle={{ flexGrow: 1 }}
                         onEndReached={() => endReached()}
                         ListFooterComponent={footerComponent}
                         ListEmptyComponent={emptyList}
+                        contentContainerStyle={{paddingVertical: 10, paddingHorizontal: 14}}
                     />
 
             }

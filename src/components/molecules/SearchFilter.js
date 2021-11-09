@@ -19,13 +19,13 @@ const SearchFilter = ({filters, setFilter, selected}) => {
 	};
 
     return (
-		<View>
+		<View style={{marginHorizontal: -14}}>
 
 			<FlatList
 				data={filters}
 				renderItem={renderItem}
 				horizontal={true}
-				contentContainerStyle={{paddingVertical: 10}}
+				contentContainerStyle={{paddingVertical: 10, paddingHorizontal: 10}}
 				showsHorizontalScrollIndicator={false}
 			/>
 

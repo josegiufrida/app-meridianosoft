@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { StyleSheet, View, Text, Button, Linking } from 'react-native';
+import { StyleSheet, View, Text, Button, Linking, Alert, StatusBar } from 'react-native';
 import { AuthContext } from '../utils/AuthContext';
 
 import Menu from '../components/organisms/Menu';
@@ -9,10 +9,37 @@ import HeaderNav from '../components/molecules/HeaderNav';
 import fonts from '../theme/fonts';
 import DevelopedBy from '../components/atoms/DevelopedBy';
 
+import moment from 'moment';
+import 'moment/locale/es';
+
 
 function HomeScreen({ navigation }) {
 
     const { auth, logOut } = useContext(AuthContext);
+
+    StatusBar.setBackgroundColor(colors.primary, true);
+
+
+    const getTimeAgo = () => {
+
+        if(!auth?.collections){
+            return null;
+        }
+
+        const last_update = auth.collections.reduce((most_recent_date, colection) => {
+
+            if(!most_recent_date){
+                return colection.updated_at;
+            }
+
+            return colection.updated_at > most_recent_date ? colection.updated_at : most_recent_date;
+
+        }, null);
+
+        return moment(last_update, 'YYYY-MM-DD hh:mm:ss').locale('es').fromNow();
+
+    };
+
 
     return (
         <View style={{flex: 1, backgroundColor: colors.primary}}>
@@ -25,10 +52,10 @@ function HomeScreen({ navigation }) {
 
                 <View style={{marginTop: 36, marginLeft: 14}}>
                     <Text style={styles.title}>{auth.company_name}</Text>
-                    <Text style={styles.subtitle}>Actualizado hace 34 minutos</Text>
+                    <Text style={styles.subtitle}>{`Actualizado hace ${getTimeAgo()}.`}</Text>
                 </View>
 
-                <Menu collections={auth.collections} />
+                <Menu collections={auth?.collections} />
 
                 <View style={{flexDirection: 'row', justifyContent:'center'}}>
                     <DevelopedBy />
@@ -58,6 +85,7 @@ const styles = StyleSheet.create({
     },
 
     title: {
+        color: colors.textPrimary,
         fontSize: 26,
         fontFamily: fonts.type.poppinsMedium,
     },

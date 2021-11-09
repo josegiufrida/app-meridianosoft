@@ -31,16 +31,19 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         alignContent: 'center',
 
-        marginBottom: 16,
+        marginBottom: 20,
         padding: 14,
 
         backgroundColor: colors.white,
         borderRadius: 6,
-        elevation: 1.25
+       
+        shadowColor: '#787878',
+        elevation: 8,
     },
 
     title:{
         flex: 1,
+        color: colors.textPrimary,
         fontFamily: fonts.type.poppinsMedium,
         paddingTop: 3,
         fontSize: 17,

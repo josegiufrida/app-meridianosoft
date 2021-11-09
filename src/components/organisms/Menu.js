@@ -16,14 +16,15 @@ const Menu = ({collections}) => {
     );
 
     return(
-
-        <FlatList
-            data={collections}
-            extraData={collections}
-            renderItem={renderItem}
-            keyExtractor={item => item.collection_id}
-        />
-
+        <View style={{flex: 1, marginHorizontal: -14}}>
+            <FlatList
+                data={collections}
+                extraData={collections}
+                renderItem={renderItem}
+                keyExtractor={item => item.collection_id}
+                contentContainerStyle={{paddingHorizontal: 14}}
+            />
+        </View>
     );
 };
 

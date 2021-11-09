@@ -56,7 +56,7 @@ const Result = ({ data, title, subTitle, collection, search, filters, selectedFi
                         highlightStyle={{color: colors.primary}}
                         searchWords={[search]}
                         textToHighlight={ocurrence.toString()}
-                        style={{flex: 1}}
+                        style={[styles.ocurrence_text, {flex: 1}]}
                         numberOfLines={1}
                     />
 
@@ -73,11 +73,13 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         alignContent: 'center',
 
-        marginBottom: 16,
+        marginBottom: 20,
 
         backgroundColor: colors.white,
         borderRadius: 6,
-        elevation: 1.25,
+
+        shadowColor: '#696969',
+        elevation: 8,
     },
 
     result: {
@@ -107,8 +109,14 @@ const styles = StyleSheet.create({
         paddingVertical: 8,
         paddingHorizontal: 14,
         flexDirection: 'row',
-        backgroundColor: colors.arrowCircle,
+        backgroundColor: colors.searchOcurrence,
+        borderBottomEndRadius: 6,
+        borderBottomStartRadius: 6,
     },
+
+    ocurrence_text: {
+        color: colors.textSecondary
+    }
 });
   
 
