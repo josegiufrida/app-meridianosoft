@@ -15,7 +15,7 @@ const colors = {
 
     detailIcon: '#77838F',
 
-    searchOcurrence: '#EBEBEB',
+    searchOcurrence: '#F2F2F2',
 
     blue: '#195EC8',
     green: '#38C1A3',

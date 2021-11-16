@@ -1,6 +1,6 @@
 
 import React, { useState, useContext, useRef } from 'react';
-import { StyleSheet, View, Text, StatusBar, TextInput, Platform, TouchableOpacity, Image, TouchableWithoutFeedback } from 'react-native';
+import { StyleSheet, View, Text, StatusBar, ActivityIndicator, TextInput, Platform, TouchableOpacity, Image, TouchableWithoutFeedback, Alert } from 'react-native';
 import colors from '../theme/colors';
 import axios from 'axios';
 import API from '../utils/api';
@@ -20,6 +20,8 @@ function Login({ navigation }) {
 	const [username, setUsername] = useState(null);
 	const [password, setPassword] = useState(null);
 
+    const [loading, setLoading] = useState(false);
+
     const [isPasswordVisible, setIsPasswordVisible] = useState(true);
 
     const [error, setError] = useState(false);
@@ -36,8 +38,16 @@ function Login({ navigation }) {
 	const logIn = async () => {
         try {
 
+            if(!username || !password){
+                setErrorMessage('El usuario o la contraseña no son correctos');
+                setError(true);
+                return;
+            }
+
+            setLoading(true);
+
             const response = await axios.post(API.LOGIN, {
-                'username': username,
+                'username': username.toLowerCase(), // Always lower case username
 				'password': password,
 				'device': Platform.OS
             });
@@ -94,6 +104,8 @@ function Login({ navigation }) {
                 setErrorMessage('Ha ocurrido un error');
             }
 
+            setLoading(false);
+
             setError(true);
             console.error(error);
 
@@ -115,7 +127,7 @@ function Login({ navigation }) {
 
             <View style={{alignItems: 'center', marginBottom: 36}}>
                 <Text style={styles.title}>Bienvenido</Text>
-                <Text style={styles.subTitle}>Ingresa con las credenciales enviadas</Text>
+                <Text style={styles.subTitle}>Ingresá con las credenciales enviadas</Text>
             </View>
 
 
@@ -129,6 +141,7 @@ function Login({ navigation }) {
                 onChangeText={setUsername}
                 value={username}
                 placeholder='Usuario'
+                autoCapitalize='none'
                 autoCompleteType='off'
                 maxLength={100}
                 selectionColor={colors.primary}
@@ -146,6 +159,7 @@ function Login({ navigation }) {
                         ref={refPassword}
                         value={password}
                         placeholder='Contraseña'
+                        autoCapitalize='none'
                         autoCompleteType='off'
                         maxLength={100}
                         selectionColor={colors.primary}
@@ -174,7 +188,11 @@ function Login({ navigation }) {
                 onPress={logIn}
             >
                 <View style={styles.login_button}>
-                    <Text style={styles.login_button_text}>Ingresar</Text>
+                    { loading ?
+                        <ActivityIndicator size={27} color={colors.white} />
+                        :
+                        <Text style={styles.login_button_text}>Ingresar</Text>
+                    }
                 </View>
             </TouchableOpacity>
 
@@ -213,11 +231,12 @@ const styles = StyleSheet.create({
 
     errorContainer: {
         marginBottom: 14,
-        paddingVertical: 7,
+        paddingTop: 9,
+        paddingBottom: 7,
         paddingHorizontal: 14,
         backgroundColor: 'rgba(252, 53, 87, 0.7)',
         borderRadius: 6,
-        borderWidth: 1.8,
+        borderWidth: 0,
         borderColor: colors.red
     },
 

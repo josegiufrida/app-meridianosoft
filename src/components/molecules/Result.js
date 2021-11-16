@@ -50,7 +50,7 @@ const Result = ({ data, title, subTitle, collection, search, filters, selectedFi
                         <SvgIcons src={'search'} size={11} color={colors.primary} />
                     </View>
 
-                    <Text>{selectedFilter?.name}: </Text>
+                    {/*<Text>{selectedFilter?.name}: </Text>*/}
 
                     <Highlighter
                         highlightStyle={{color: colors.primary}}
@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
         backgroundColor: colors.white,
         borderRadius: 6,
 
-        shadowColor: '#696969',
+        shadowColor: '#616161',
         elevation: 8,
     },
 

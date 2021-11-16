@@ -148,7 +148,6 @@ const styles = StyleSheet.create({
 
     container: {
         flex: 1,
-        paddingHorizontal: 14,
         flexDirection: 'column',
         backgroundColor: colors.backgroundColor,
     },
