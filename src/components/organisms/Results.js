@@ -206,7 +206,7 @@ const Results = ({collection, search, filters, selectedFilter}) => {
                         onEndReached={() => endReached()}
                         ListFooterComponent={footerComponent}
                         ListEmptyComponent={emptyList}
-                        contentContainerStyle={{paddingVertical: 10, paddingHorizontal: 14}}
+                        contentContainerStyle={{flexGrow:1, paddingVertical: 10, paddingHorizontal: 14}}
                     />
 
             }
